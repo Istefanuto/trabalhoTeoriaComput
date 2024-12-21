@@ -1,0 +1,46 @@
+# Problema: Gerenciamento de uma lista de produtos vendidos em uma loja
+# Solução: Utilizar funções funcionais (map, filter, reduce) para transformar, filtrar e reduzir a lista.
+# 
+# Descrição do Problema:
+# Temos uma lista de produtos, cada produto é representado como um dicionário contendo nome, categoria, quantidade e preço.
+# - Precisamos calcular o preço total dos produtos de uma categoria específica.
+# - Selecionar apenas os produtos com estoque inferior a um valor definido (por exemplo, 5).
+# - Criar uma nova lista de nomes de produtos com preços ajustados por um aumento de 10%.
+
+# Importação de módulos
+from functools import reduce
+
+# Lista de produtos
+produtos = [
+    {"nome": "Camisa", "categoria": "Vestuario", "quantidade": 10, "preco": 50.0},
+    {"nome": "Calça", "categoria": "Vestuario", "quantidade": 3, "preco": 120.0},
+    {"nome": "Tenis", "categoria": "Calcados", "quantidade": 7, "preco": 300.0},
+    {"nome": "Meia", "categoria": "Vestuario", "quantidade": 20, "preco": 10.0},
+    {"nome": "Jaqueta", "categoria": "Vestuario", "quantidade": 2, "preco": 200.0},
+]
+
+# 1. MAP: Aumentar os preços em 10% e criar uma nova lista de nomes e preços ajustados
+produtos_com_aumento = list(map(lambda p: {"nome": p["nome"], "preco_ajustado": p["preco"] * 1.1}, produtos))
+print("\nProdutos com aumento de 10% no preço:")
+print(produtos_com_aumento)
+
+# 2. FILTER: Filtrar produtos com estoque inferior a 5
+produtos_baixo_estoque = list(filter(lambda p: p["quantidade"] < 5, produtos))
+print("\nProdutos com estoque inferior a 5 unidades:")
+print(produtos_baixo_estoque)
+
+# 3. REDUCE: Calcular o preço total de todos os produtos da categoria "Vestuario"
+vestuario_total = reduce(
+    lambda total, p: total + p["preco"] * p["quantidade"],
+    filter(lambda p: p["categoria"] == "Vestuario", produtos),
+    0,
+)
+print("\nPreço total dos produtos da categoria Vestuario:")
+print(vestuario_total)
+
+# Comentário explicativo:
+# - A solução imperativa exigiria a iteração manual sobre as listas com laços, mais código boilerplate e maior risco de erros.
+# - A solução funcional é mais concisa, legível e permite foco no que deve ser feito em vez de como fazer.
+# - map é utilizado para transformações em listas (ajuste de preço),
+# - filter seleciona elementos com base em uma condição (baixo estoque),
+# - reduce é usado para agregação de valores (cálculo de preço total).
